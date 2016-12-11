@@ -1,0 +1,107 @@
+﻿@*<div class="jumbotron">
+    <h1>ASP.NET</h1>
+    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
+    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Getting started</h2>
+        <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
+        a broad range of clients, including browsers and mobile devices. ASP.NET Web API
+        is an ideal platform for building RESTful applications on the .NET Framework.</p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Get more libraries</h2>
+        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Web Hosting</h2>
+        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
+    </div>
+</div>*@
+
+<script type="text/javascript">
+    function getListOfStores() {
+        //alert();
+        $.ajax({
+            type: "GET",
+            url: "/api/store",
+            success: function(data) {
+                for (var i = 0; i < data.length; i++) {
+                    $('#tableOfStores')
+                        .append("<tr><td>" + data[i].Name + "</td>" +
+                            "<td>" + data[i].Address + "</td>" +
+                            "<td>" + data[i].Mode + "</td>" +
+                            "<td><button class='btn-info' value='" + data[i].Id + "' onclick='getListOfGoods(this);'>Просмотр товаров</button></td>" +
+                            "</tr>");
+                }
+
+            }
+        });
+    };
+
+    function getListOfGoods(obj) {
+        $('.container:last').css('display', 'block');
+        var storeId = obj.value;
+        var storeName = obj.parentNode.parentNode.firstChild.innerHTML;
+        var title = 'Таблица товаров в магазине "' + storeName + '"';
+        $('#tableGoodsHeader').text(title);
+        $.ajax({
+            type: "GET",
+            url: "/api/store?storeId=" + storeId,
+            success: function (data) {
+                $('#tableOfGoods').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('#tableOfGoods')
+                        .append("<tr><td>" + data[i].Name + "</td>" +
+                            "<td>" + data[i].Description + "</td>" +
+                            "</tr>");
+                }
+
+            }
+        });
+    };
+
+    function Hide() {
+        $('.container:last').css('display', 'none');
+    };
+
+    window.onload = getListOfStores;
+</script>
+
+<div class="container">
+    <h2 style="text-align: center">Таблица магазинов</h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th style="text-align: center; font-size: 16pt; width: 20%;">Наименование</th>
+                <th style="text-align: center; font-size: 16pt; width: 30%;">Адрес</th>
+                <th style="text-align: center; font-size: 16pt; width: 30%;">Режим работы</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tableOfStores">
+
+        </tbody>
+    </table>
+</div>
+
+<div class="container" style="display: none;">
+    <h2 id="tableGoodsHeader" style="text-align: center"></h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th style="text-align: center; font-size: 16pt; width: 20%;">Название</th>
+                <th style="text-align: center; font-size: 16pt; width: 30%;">Описание</th>
+            </tr>
+        </thead>
+        <tbody id="tableOfGoods"></tbody>
+    </table>
+
+    <button id="hideTablesOfGoods" class="btn-danger" onclick="Hide()">Скрыть результаты поиска</button>
+</div>
