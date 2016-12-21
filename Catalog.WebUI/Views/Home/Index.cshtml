@@ -29,7 +29,7 @@
         $.ajax({
             type: "GET",
             url: "/api/store",
-            success: function(data) {
+            success: function (data) {
                 for (var i = 0; i < data.length; i++) {
                     $('#tableOfStores')
                         .append("<tr><td>" + data[i].Name + "</td>" +

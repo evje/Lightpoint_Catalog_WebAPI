@@ -9,6 +9,7 @@ namespace Catalog.Domain.Concrete
         private EfDbContext context = new EfDbContext();
         private GenericRepository<Store> storeRepository;
         private GenericRepository<Good> goodRepository;
+        //private GenericRepository<StoreAndGood> storeAndGoodRepository;
 
         public GenericRepository<Store> StoreRepository
         {

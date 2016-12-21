@@ -14,20 +14,51 @@ namespace Catalog.WebUI.Controllers
 {
     public class StoreController : ApiController
     {
-        private UnitOfWork unitOfWork = new UnitOfWork();
-
-        public List<Store> GetAllStores()
+        private readonly UnitOfWork _unitOfWork = new UnitOfWork();
+        
+        public IEnumerable<Store> GetAllStores()
         {
-            List<Store> stores = unitOfWork.StoreRepository.Get(includeProperties: "Goods").ToList();
-
-            return stores;
+            var stores = _unitOfWork.StoreRepository.Get(includeProperties: "Goods").Select(x => 
+            new Store() {Id = x.Id, Name = x.Name, Address = x.Address, Mode = x.Mode});
+            //var stores = _unitOfWork.StoreRepository.Get();
+            var result = stores as IList<Store> ?? stores.ToList();
+            if (result.Count != 0)
+            {
+                return result;
+            }
+            else
+            {
+                var shortResult = new Store() { Id = 0, Name = "не найдено", Address = "не найдено", Mode = "не найдено" };
+                result.Add(shortResult);
+                return result;
+            }
         }
 
-        public List<Good> GetGoodsByStoreId(Int32 storeId)
+        public ICollection<Good> GetGoodsByStoreId(Int32 storeId)
         {
-            var goods = unitOfWork.GoodRepository.Get().Where(x => (x.StoreId == storeId)).ToList();
-
-            return goods;
+            if (_unitOfWork.StoreRepository.GetByID((object)storeId) != null)
+            {
+                var goods = _unitOfWork.StoreRepository.GetByID((object)storeId).Goods.Select(x => new Good() { Id = x.Id, Name = x.Name, Description = x.Description });
+                var result = goods as IList<Good> ?? goods.ToList();
+                if (result.Count != 0)
+                {
+                    return result;
+                }
+                else
+                {
+                    var shortResult = new Good() { Id = 0, Name = "не найдено", Description = "не найдено" };
+                    result.Add(shortResult);
+                    return result;
+                }
+            }
+            else
+            {
+                var result = new List<Good>();
+                var shortResult = new Good() { Id = 0, Name = "не найдено", Description = "не найдено" };
+                result.Add(shortResult);
+                return result;
+            }
+            
         }
 
     }

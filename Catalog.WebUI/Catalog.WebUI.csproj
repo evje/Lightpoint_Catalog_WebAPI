@@ -256,6 +256,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="CreateStoreGoodsTable.sql" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -309,10 +310,11 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="SetGoodsValues.sql" />
+    <Content Include="SetStoreGoodsValues.sql" />
     <Content Include="SetStoresValues.sql" />
-    <Content Include="SQLQueryCreateDb.sql" />
-    <Content Include="SQLQueryCreateTableGoods.sql" />
-    <Content Include="SQLQueryCreateTableStores.sql" />
+    <Content Include="CreateDb.sql" />
+    <Content Include="CreateGoodsTable.sql" />
+    <Content Include="CreateStoresTable.sql" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
